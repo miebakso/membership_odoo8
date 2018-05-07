@@ -1,0 +1,310 @@
+
+<openerp>
+	<data>
+		<record id="menu_voucher" model="website.menu">
+			<field name="name">Vouchers</field>
+			<field name="url">/vouchers</field>
+			<field name="parent_id" ref="website.main_menu"/>
+			<field name="sequence" type="int">51</field>
+		</record>
+
+		<record id="menu_mypurchases" model="website.menu">
+			<field name="name">My Purchases</field>
+			<field name="url">/mypurchases</field>
+			<field name="parent_id" ref="website.main_menu"/>
+			<field name="sequence" type="int">51</field>
+		</record>
+
+		<!-- Home =================================================================================================================== -->
+		<template id="home">
+			<t t-call="website.layout">
+				<div id="wrap" class="wrap_bg">
+				
+				</div>
+			</t>
+		</template>
+
+		<!-- Vouchers =================================================================================================================== -->
+
+		<template id="vouchers">
+			<t t-call="website.layout">
+				<div id="wrap" class="wrap_bg">
+					<div class="list_of_vouchers">
+						<t t-call="membership_point.vouchers_list_row"></t>
+					</div>
+				</div>
+			</t>
+		</template>
+
+		
+		<!-- Vouchers LIst Row =================================================================================================================== -->
+
+		<template id="vouchers_list_row">
+		<t t-foreach="vouchers" t-as="voucher">				
+			<div class="row ">
+				<div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<t t-esc="voucher.name" />
+						</div>
+						<div class="panel-body voucher_row">
+							<div class="row">
+								<div class="col-md-3 col-xs-12 col-sm-12">
+									<center>	
+										<img class="img_thumbnail"  t-attf-src="data:image/*;base64,{{voucher.thumbnail}}"  />
+									</center>
+								</div>
+								<div class="col-md-9 col-xs-12 col-sm-12">
+									<div class="row">	
+										<div class="col-md-3 col-xs-12 col-sm-12">
+											<b>Name</b>
+										</div>
+										<div class="col-md-9 col-xs-12 col-sm 12">
+											<t t-esc="voucher.name" />
+										</div>
+										<div class="col-md-3 col-xs-12 col-sm 12">
+											<b>Description</b>
+										</div>
+										<div class="col-md-9 col-xs-12 col-sm 12">
+											<t t-esc="voucher.description" />
+										</div>
+										<div class="col-md-3 col-xs-12 col-sm 12">
+											<b>Point Price</b>
+										</div>
+										<div class="col-md-9 col-xs-12 col-sm 12">
+											<t t-esc="voucher.point_price" />
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">		
+									<center>
+										<a t-attf-data-state="{{voucher.id}}" t-attf-class="btn btn-success btn-sm active see_details" t-attf-role="button">Details</a>
+									</center>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</t>
+		</template>
+
+		<!-- Details Voucher =================================================================================================================== -->
+
+		<template id="detail">
+			<t t-call="website.layout">
+				<div id="wrap" class="wrap_bg">
+					<t t-call="membership_point.details_voucher_row"></t>
+				</div>
+			</t>
+		</template>
+	
+		<!-- Details Voucher Row =================================================================================================================== -->
+		
+		<template id="details_voucher_row">	
+		<t t-foreach="vouchers" t-as="voucher">
+			<div class="row description" >
+				  <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1 col-sm-10 col-xs-offset-1">
+				<div class="col-md-6 col-xs-12 col-sm-12 ">
+					<center>
+						<img  class="img_detail" t-attf-src="data:image/*;base64,{{voucher.voucher_image}}"  />
+					</center>
+				</div>
+				<div class="col-md-6 col-xs-12 col-sm-12">
+					<div class="row">
+						<div class="col-md-3">
+							<b>Name</b>
+						</div>
+						<div class="col-md-9">
+							<t t-esc="voucher.name" />
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3">
+							<b>Description</b>
+						</div>
+						<div class="col-md-9">
+							<t t-esc="voucher.description" />
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3">
+							<b>Point Price</b>
+						</div>
+						<div class="col-md-9">
+							<t t-esc="voucher.point_price" />
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3">
+							<b>Term and Condition</b>
+						</div>
+						<div class="col-md-9">
+							<span><t t-esc="voucher.terms_and_conditions" /></span>
+						</div>
+					</div>
+					<div t-if="voucher.expired_month">
+						<div class="row">
+							<div class="col-md-3">
+								<b>Expired in </b>
+							</div>
+							<div class="col-md-9">
+								<t t-esc="voucher.expired_month" /><span> month</span>
+							</div>
+						</div>										
+					</div>
+					<div t-if="voucher.expired_date">
+						<div class="row">
+							<div class="col-md-3">
+								<b>Expire Date</b>
+							</div>
+							<div class="col-md-9">
+								<t t-esc="voucher.expired_date" />
+							</div>
+						</div>	
+					</div>
+					<t t-if="voucher.member_level_ids">
+						<div class="row">
+							<div class="col-md-3">
+								<b>Valid for</b>
+							</div>
+							<div class="col-md-9">
+								<t t-foreach="voucher.member_level_ids" t-as="x">
+									<t  t-esc="x.name"  /><br/>
+								</t>
+							</div>
+						</div>
+					</t>
+					<t t-foreach="voucher.member_level_ids" t-as="levels">
+						<t t-if="levels == member.current_level">
+							<form class="form-horizontal voucher_form" method="post" action="/vouchers/purchase/" >
+								<div class="row">	
+									<div class="col-md-3">	
+										<label for="name" >Qty</label>
+									</div>
+									<div class="col-md-3 col-sm-6 col-xs-9">	
+										<input type="number" value="1" class="form-control" min="1" name="qty" required="true" />
+									</div>
+								</div>
+								<input t-attf-value="{{voucher.id}}" name="voucher_id" type="hidden" />
+								<div class="row">
+									<div class="col-md-12">	
+										<button type="submit" class="btn btn-success voucher_button">Purchase</button>	
+										<button type="button" class="btn btn_collapse btn-danger">Collapse</button>	
+									</div>
+								</div>								
+							</form>
+						</t>
+					</t>
+					</div>
+				</div>
+			</div>
+		</t>
+		</template>
+
+		<!-- Import =================================================================================================================== -->
+
+		<template id="membership_point_style" name="Membership Point Website Style" inherit_id="website.theme">
+			<xpath expr="//link[last()]" position="after">
+				<link type="text/css" href="/membership_point/static/src/css/website.css" rel="stylesheet" ></link>
+				<script type="text/javascript" src="/membership_point/static/src/js/website.js"></script>
+			</xpath>
+		</template>
+
+
+		<!-- My Purchases =================================================================================================================== -->
+
+		<template id="mypurchases">
+			<t t-call="website.layout">
+				<div id="wrap" class="wrap_bg">
+					<div class="row">
+						<div class="col-md-12 col-sm-12 col-ms-12">
+							
+							<ul class="nav nav-tabs">
+								<li ><button data-toggle="tab" class="btn" id="active_tab" data-state="generated">Active</button></li>
+								<li ><button data-toggle="tab" class="btn" id="used_tab" data-state="used">Used</button></li>
+								<li ><button data-toggle="tab" class="btn" id="expired_tab" data-state="expired">Expired</button></li>
+							</ul>
+
+							<div class="tab-content">
+								<div id="activated" class="tab-pane fade in active">
+									<t t-call="membership_point.mypurchases_row"></t>
+								</div>
+							</div>	
+						</div>
+					</div>
+
+				</div>
+			</t>
+		</template>
+
+		<!-- My Purchases Row =================================================================================================================== -->
+
+
+
+		<template id="mypurchases_row">
+			<t t-foreach="vouchers" t-as="voucher">
+			<div class="row">
+				<div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+					<div class="panel panel-primary">
+						<div class="panel-heading"><t t-esc="voucher.setting_id.name" /></div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-3 col-xs-12 col-sm-12">
+									<img class="mypurchases_img" t-attf-src="data:image/*;base64,{{voucher.setting_id.thumbnail}}"  />
+								</div>
+								<div class="col-md-9 col-xs-12 col-sm-12">
+									<div class="row">
+										<div class="col-md-3 col-xs-12 col-sm-12">
+											<b>Voucher number</b>
+										</div>
+										<div class="col-md-9 col-xs-12 col-sm 12">
+											<t t-esc="voucher.name" />
+										</div>
+										<div class="col-md-3 col-xs-12 col-sm-12">
+											<b>Name</b>
+										</div>
+										<div class="col-md-9 col-xs-12 col-sm 12">
+											<t t-esc="voucher.setting_id.name" />
+										</div>
+										<div class="col-md-3 col-xs-12 col-sm 12">
+											<b>Description</b>
+										</div>
+										<div class="col-md-9 col-xs-12 col-sm 12">
+											<t t-esc="voucher.setting_id.description" />
+										</div>
+										<div class="col-md-3">
+											<b>Term and Condition</b>
+										</div>
+										<div class="col-md-9">
+											<t t-esc="voucher.setting_id.terms_and_conditions" />
+										</div>
+										<div class="col-md-3 col-xs-12 col-sm 12">
+											<b>Expired Date</b>
+										</div>
+										<div class="col-md-9 col-xs-12 col-sm 12">
+											<!-- <t t-if="'+item.today_date+' &lt; 30">
+												<span >'+ item.expired_date+'</span>
+											</t>
+											<t t-else="else">
+												<span style="color : red;">'+ item.expired_date+'</span>
+											</t> -->
+											<t t-esc="voucher.expired_date" />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</t>
+		</template>		
+
+	</data>
+</openerp>
+
+
+
